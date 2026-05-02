@@ -1,50 +1,69 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# ToDo 관리 CLI 프로젝트 헌법
+<!--
+Sync Impact Report
 
-## Core Principles
+Version change: [CONSTITUTION_VERSION] (template placeholder) -> 0.1.0
+Modified principles:
+- [레이어 분리] (원칙 1: 레이어 분리)
+- [테스트 우선] (원칙 2: 테스트 우선)
+- [최소 의존성] (원칙 3: 최소 의존성)
+- [단순함 우선] (원칙 4: 단순함 우선)
+- [CLI 도구 구현] (원칙 5: CLI 도구 구현)
+Added sections:
+- 범위 제약 (기술적 범위와 제외사항 명시)
+- 개발 워크플로 (테스트 및 검토 절차)
+Removed sections: none
+Templates requiring updates:
+- .specify/templates/plan-template.md ⚠ pending — `Constitution Check` 항목이 본 헌법과 충돌하지 않는지 검증 필요
+- .specify/templates/spec-template.md ⚠ pending — `Input` 및 `Requirements` 섹션에 CLI 전용 제약 반영 필요
+- .specify/templates/tasks-template.md ⚠ pending — 태스크 분류에 'CLI' 특화 항목 반영 필요
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+Follow-up TODOs:
+- TODO(RATIFICATION_DATE): ratification date 불명 — 실제 채택일을 기입하세요.
+-->
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+## 핵심 원칙
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### 1. 레이어 분리
+비즈니스 로직은 사용자 인터페이스와 분리된 독립 레이어에서 구현되어야 한다. UI(터미널 입력/출력)는 단지 프레젠테이션 계층이며, 핵심 로직과 데이터 모델은 별도의 모듈(또는 패키지)로 유지되어야 한다. 이 원칙은 다음과 같이 검증 가능하다:
+- `서비스/도메인` 계층은 CLI 핸들러를 직접 호출하지 않아야 한다 (의존성 역전 적용).
+- 단위 테스트는 UI 없이 서비스 계층만으로 실행 가능해야 한다.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### 2. 테스트 우선 (NON-NEGOTIABLE)
+테스트 코드는 구현 코드보다 먼저 작성되어야 하며, 테스트 없는 구현은 허용되지 않는다. 모든 새로운 기능 또는 수정은 다음 흐름을 따라야 한다: 실패하는 테스트 작성 → 테스트가 실패함을 확인 → 구현 작성 → 테스트 통과 → 리팩토링. 검증 기준:
+- 모든 기능은 자동화된 단위 테스트 또는 통합 테스트를 갖춰야 한다.
+- CI 파이프라인은 테스트 통과를 병합 조건으로 강제해야 한다.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### 3. 최소 의존성
+외부 패키지 도입 전에는 반드시 필요성을 검토하고 대안을 고려해야 한다. 불필요한 의존성은 추가하지 않는다. 검토 기준:
+- 기능 구현에 표준 라이브러리로 충분한지 먼저 검토한다.
+- 외부 패키지는 보안·유지보수·라이선스 리스크를 평가한 후 허용한다.
+- 추가된 의존성은 `requirements.txt`(또는 대응 매니페스트)에 근거와 함께 기록한다.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### 4. 단순함 우선
+지금 당장 필요하지 않은 추상화 또는 아키텍처 레이어를 만들지 않는다. 명확하고 직접적인 구현을 우선으로 하며, 복잡성은 실제 필요가 증명될 때만 도입한다. 평가 방법:
+- 대안 설계가 복잡도를 증가시키면 반드시 근거(성능, 재사용성 등)를 문서화한다.
+- YAGNI(You Aren't Gonna Need It) 원칙 적용: 미검증 요구는 보류한다.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### 5. CLI 도구 구현 (범위 제한)
+이 프로젝트는 터미널에서 사용하는 CLI 기반 생산성 도구(할 일 관리)를 만든다. REST API 서버, GUI, 웹 인터페이스는 프로젝트 범위 밖이다. 범위 규칙:
+- 인터페이스는 표준 입출력(인수, stdin, stdout, stderr) 또는 터미널 캡슐화 라이브러리로 제한한다.
+- 원격 서버나 웹 UI 연동은 별도 프로젝트로 취급하며 현 헌법의 적용 대상이 아니다.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## 범위 제약
+이 프로젝트는 로컬/CLI 기반의 ToDo 관리 기능을 제공하는 것을 목표로 한다. 네트워크 기반 서버, 브라우저 또는 모바일 GUI는 포함하지 않는다. 필요한 경우 향후 확장 제안은 별도 명세로 제안하고 본 헌법에 따른 의사결정을 거쳐야 한다.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## 개발 워크플로
+- 모든 변경은 이슈 → 브랜치 → PR 워크플로를 따른다.
+- PR에는 관련 테스트와 사용법(간단한 CLI 예시)을 포함해야 한다.
+- 코드 리뷰 시 `레이어 분리`와 `테스트 우선` 준수를 검증해야 한다.
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+## 거버넌스
+헌법은 프로젝트의 상위 규칙이며, 다음 절차로 수정된다:
+- 수정 제안은 PR로 제출하고, 최소 두 명의 승인(또는 지정된 거버넌스 위원회 승인)을 받아야 한다.
+- 헌법의 중대한 변경(원칙 추가/삭제 또는 적용 범위 변경)은 MAJOR 버전 증가를 요구한다.
+- 새 원칙 추가 또는 의미있는 확장은 MINOR 버전 증가를 요구한다.
+- 문구 수정·사소한 정정은 PATCH 버전 증가를 요구한다.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**Version**: 0.1.0 | **Ratified**: 2026-05-02 | **Last Amended**: 2026-05-02
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
