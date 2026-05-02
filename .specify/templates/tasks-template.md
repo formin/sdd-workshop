@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: 이 프로젝트 헌법에 따라 테스트는 필수입니다. 모든 주요 사용자 시나리오에 대해 자동화된 테스트를 먼저 작성하고(단위 또는 통합), 테스트가 실패함을 확인한 후 구현을 진행해야 합니다. 아래의 작업 목록에는 각 사용자 이야기별로 테스트 작업을 반드시 포함하십시오.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -79,9 +79,9 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (MANDATORY — 먼저 작성하고 실패 확인) ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **주의: 이 테스트들을 먼저 작성하고 실패함을 확인한 후 구현을 시작하세요.**
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
@@ -105,7 +105,7 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (MANDATORY — 먼저 작성하고 실패 확인) ⚠️
 
 - [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
@@ -127,7 +127,7 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (MANDATORY — 먼저 작성하고 실패 확인) ⚠️
 
 - [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
@@ -160,6 +160,16 @@ Examples of foundational tasks (adjust based on your project):
 ---
 
 ## Dependencies & Execution Order
+
+## 의존성 검토 (Dependency Review)
+
+- 모든 외부 패키지 도입 제안은 다음을 포함해야 함:
+  - 도입 이유와 제공하는 기능(짧게)
+  - 표준 라이브러리로 대체 가능한지 여부 및 대체안
+  - 보안·라이선스·유지보수 리스크(간단 체크)
+  - `requirements.txt`(또는 프로젝트 매니페스트)에 변경 근거를 주석으로 기록
+
+위 항목이 충족되지 않으면 의존성 도입은 보류하거나 별도 승인 절차를 밟아야 한다.
 
 ### Phase Dependencies
 

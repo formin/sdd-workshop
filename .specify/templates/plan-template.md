@@ -28,10 +28,18 @@
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
+## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Constitution 기반 검증 항목(모든 계획은 아래 게이트를 명시적으로 통과해야 함):
+
+- **범위 확인 (CLI 전용)**: 본 프로젝트/피처는 CLI(터미널) 기반인지 확인. REST API, GUI, 웹 인터페이스가 필요하다면 별도 제안서와 헌법 예외 승인이 필요하다.
+- **테스트 우선(TDD)**: 주요 기능에 대한 실패하는 테스트(단위/통합)를 먼저 작성해야 함. Plan에는 어떤 테스트가 먼저 작성될지(테스트 종류, 위치)를 명시한다.
+- **최소 의존성 검토**: Plan에 표준 라이브러리로 대체 가능한지, 외부 패키지 도입 근거(보안·유지보수·라이선스 평가)를 포함해야 함.
+- **레이어 분리 확인**: 아키텍처가 UI와 비즈니스 로직을 분리하도록 설계되었는지(서비스/도메인 계층 구분) 확인.
+
+이 섹션에서 각 게이트에 대한 `예/아니오` 상태와 필요한 조치(미충족 시)를 명시해야 하며, 미충족 항목은 Phase 0에서 해결 계획을 포함해야 한다.
 
 ## Project Structure
 

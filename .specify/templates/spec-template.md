@@ -126,3 +126,10 @@
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
 - [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+
+## Constitution Constraints (프로젝트 헌법 관련 필수 제약)
+
+- **인터페이스 범위**: 이 명세가 포함하는 구현은 CLI(터미널) 기반으로 한정한다. REST API, GUI, 웹 인터페이스는 본 명세의 범위 밖이며, 필요 시 별도 명세 및 헌법 예외 절차를 통해 승인 받아야 한다.
+- **테스트 우선**: 모든 주요 사용 시나리오에 대해 먼저 자동화된 테스트(단위 또는 통합)를 작성하고, 테스트가 실패함을 확인한 후 구현을 진행해야 한다. 명세는 우선 작성될 테스트의 목록과 위치를 포함해야 한다.
+- **최소 의존성**: 외부 패키지 사용은 엄격히 검토한다. 명세는 제안되는 외부 의존성의 이유, 대체안, 보안·라이선스 고려사항을 포함해야 한다.
+- **레이어 분리 요구**: 구현은 UI(클라이언트)와 비즈니스 로직을 분리하는 구조로 설계되어야 한다. 명세는 서비스/도메인 계층과 CLI 핸들러의 경계를 설명해야 한다.
