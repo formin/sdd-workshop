@@ -21,6 +21,9 @@ go build ./cmd/todo
 - 단위/통합 테스트 추가
 - `cobra` 의존성 초기화 (go get)
 
+
+기본 저장소: sqlite (권장)
+
 SQLite 사용 안내:
 
 1. sqlite 드라이버 설치(빌드 시 자동으로 가져오지만, 명시적으로 추가하려면):

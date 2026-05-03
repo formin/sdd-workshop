@@ -21,7 +21,7 @@ func main() {
         Short: "Simple ToDo CLI",
     }
 
-    rootCmd.PersistentFlags().StringVar(&storageType, "storage", "file", "Storage backend: file|sqlite")
+    rootCmd.PersistentFlags().StringVar(&storageType, "storage", "sqlite", "Storage backend: file|sqlite")
     rootCmd.PersistentFlags().StringVar(&dbPath, "db", "todo.db", "SQLite DB path")
     rootCmd.PersistentFlags().StringVar(&filePath, "file", "todo.json", "File storage path")
 
