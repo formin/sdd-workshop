@@ -5,4 +5,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 d01/
+d02/
 .vscode/
+.coverage
+todo.db
+uv.lock

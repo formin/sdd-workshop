@@ -21,7 +21,9 @@ def _format_item(it) -> str:
     mark = "x" if it.completed else " "
     due = it.due_date.date().isoformat() if it.due_date else "-"
     pri = it.priority.value if it.priority else "-"
-    return f"{it.id}. [{mark}] {it.title} (priority:{pri}, due:{due})"
+    # 002-tags FR-110: 항상 표시, 사전식 정렬, 빈 태그는 tags:[]
+    tags = ",".join(sorted(it.tags))
+    return f"{it.id}. [{mark}] {it.title} (priority:{pri}, due:{due}) tags:[{tags}]"
 
 
 def _build_service(db_path: str) -> TodoService:
@@ -30,7 +32,12 @@ def _build_service(db_path: str) -> TodoService:
 
 def _cmd_add(args: argparse.Namespace) -> int:
     svc = _build_service(args.db)
-    item = svc.add(title=args.title, due=args.due, priority=args.priority)
+    item = svc.add(
+        title=args.title,
+        due=args.due,
+        priority=args.priority,
+        tags=args.tag,
+    )
     print(f"Created ID {item.id}")
     return 0
 
@@ -43,7 +50,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
     elif args.pending:
         completed = False
 
-    items = svc.list(completed=completed, priority=args.priority)
+    items = svc.list(completed=completed, priority=args.priority, tag=args.tag)
     if not items:
         print("(항목이 없습니다)")
         return 0
@@ -86,6 +93,13 @@ def build_parser() -> argparse.ArgumentParser:
         choices=["low", "medium", "high"],
         help="우선순위",
     )
+    p_add.add_argument(
+        "--tag",
+        action="append",
+        default=None,
+        metavar="<name>",
+        help="태그 (반복 지정으로 다중 부여, 최대 5개, 각 1~20자)",
+    )
     p_add.set_defaults(func=_cmd_add)
 
     p_list = sub.add_parser("list", help="ToDo 항목 목록 조회")
@@ -96,6 +110,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--priority",
         choices=["low", "medium", "high"],
         help="우선순위로 필터",
+    )
+    p_list.add_argument(
+        "--tag",
+        default=None,
+        metavar="<name>",
+        help="태그로 필터 (정규화 후 정확 일치, 단일 값)",
     )
     p_list.set_defaults(func=_cmd_list)
 

@@ -42,3 +42,18 @@ def test_complete_help_documents_id(capsys):
 def test_delete_help_documents_id(capsys):
     out = _help(["delete", "--help"], capsys)
     assert "id" in out.lower()
+
+
+# --- T013 / T017: 002-tags 확장 — --tag 도움말 ---
+
+
+def test_add_help_documents_tag_option_with_limit(capsys):
+    out = _help(["add", "--help"], capsys)
+    assert "--tag" in out
+    # FR-102: 한도 안내
+    assert "5" in out
+
+
+def test_list_help_documents_tag_filter(capsys):
+    out = _help(["list", "--help"], capsys)
+    assert "--tag" in out

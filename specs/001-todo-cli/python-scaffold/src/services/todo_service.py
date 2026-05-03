@@ -5,10 +5,12 @@ CLI는 이 서비스만 호출한다(헌법 원칙 1: 레이어 분리).
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import UTC, datetime
 
 from services.due_date import parse_due_date
 from services.models import Priority, ToDoItem
+from services.tags import normalize_tag, validate_tags
 from storage.base import Storage
 
 __all__ = ["TodoService"]
@@ -36,6 +38,7 @@ class TodoService:
         title: str,
         due: str | None = None,
         priority: str | None = None,
+        tags: Iterable[str] | None = None,
     ) -> ToDoItem:
         if not title or not title.strip():
             raise ValueError("title은 비어있을 수 없습니다")
@@ -46,6 +49,7 @@ class TodoService:
             created_at=datetime.now(tz=UTC),
             due_date=parse_due_date(due),
             priority=_to_priority(priority),
+            tags=validate_tags(tags),
         )
         return self._storage.add(item)
 
@@ -53,6 +57,7 @@ class TodoService:
         self,
         completed: bool | None = None,
         priority: str | None = None,
+        tag: str | None = None,
     ) -> list[ToDoItem]:
         items = self._storage.list()
         if completed is not None:
@@ -60,6 +65,9 @@ class TodoService:
         if priority is not None:
             target = _to_priority(priority)
             items = [it for it in items if it.priority is target]
+        if tag is not None:
+            target_tag = normalize_tag(tag)
+            items = [it for it in items if target_tag in it.tags]
         return items
 
     def get(self, item_id: int) -> ToDoItem:

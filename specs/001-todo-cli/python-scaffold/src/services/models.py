@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from enum import StrEnum
 
@@ -28,3 +28,5 @@ class ToDoItem:
     due_date: datetime | None = None
     priority: Priority | None = None
     completed: bool = False
+    # 002-tags: 태그 컬렉션. frozenset으로 중복·이뮤터블 보장.
+    tags: frozenset[str] = field(default_factory=frozenset)
