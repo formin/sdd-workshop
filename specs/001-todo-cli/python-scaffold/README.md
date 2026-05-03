@@ -26,10 +26,10 @@ pip install -e ".[dev]"
 ### 사용 예시
 
 ```powershell
-# 항목 추가
-todo add "보고서 작성" --due 2026-06-01 --priority high
+# 항목 추가 (태그 0~5개 선택)
+todo add "보고서 작성" --due 2026-06-01 --priority high --tag work --tag 2026Q2
 
-# 전체 목록
+# 전체 목록 (모든 항목에 tags:[...] 표시)
 todo list
 
 # 미완료만 보기
@@ -37,6 +37,12 @@ todo list --pending
 
 # 우선순위 필터
 todo list --priority high
+
+# 태그로 필터 (정규화 후 정확 일치, 단일 값)
+todo list --tag work
+
+# 다른 필터와 결합 (AND)
+todo list --tag work --completed
 
 # 항목 완료
 todo complete 1
@@ -46,6 +52,13 @@ todo delete 1
 ```
 
 저장 파일은 기본 `todo.json`이며 `--db <경로>` 옵션으로 변경할 수 있습니다.
+
+### 태그 규칙 (002-tags)
+
+- 항목당 0~5개, 각 1~20자.
+- 허용 문자: 영문/숫자/한글/`-`/`_`. 공백·콤마·기타 특수문자는 거부.
+- 정규화: Unicode NFKC → 앞뒤 공백 제거 → 소문자 변환. 동일 의미 태그(`Work`/`work`/` WORK `, NFD/NFC 한글)는 자동으로 합쳐짐.
+- 출력: 모든 `list` 라인 끝에 `tags:[t1,t2,...]` 형식으로 항상 표시(빈 태그는 `tags:[]`).
 
 ## 테스트
 

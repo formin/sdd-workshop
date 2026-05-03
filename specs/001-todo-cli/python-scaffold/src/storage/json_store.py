@@ -100,6 +100,8 @@ def _serialize(item: ToDoItem) -> dict:
         "due_date": item.due_date.isoformat() if item.due_date else None,
         "priority": item.priority.value if item.priority else None,
         "completed": item.completed,
+        # 002-tags: 항상 배열 키 부여, 사전식 정렬로 파일 diff 안정성 확보
+        "tags": sorted(item.tags),
     }
 
 
@@ -111,4 +113,6 @@ def _deserialize(d: dict) -> ToDoItem:
         due_date=datetime.fromisoformat(d["due_date"]) if d.get("due_date") else None,
         priority=Priority(d["priority"]) if d.get("priority") else None,
         completed=bool(d["completed"]),
+        # 002-tags: 태그 필드 없는 기존 파일은 빈 frozenset으로 해석 (FR-109)
+        tags=frozenset(d.get("tags", [])),
     )

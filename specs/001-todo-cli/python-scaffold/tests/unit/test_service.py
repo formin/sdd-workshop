@@ -91,3 +91,80 @@ def test_id_reference_with_duplicate_titles(service):
     service.delete(c.id)
     remaining = {it.id for it in service.list()}
     assert remaining == {a.id, b.id}
+
+
+# --- T010: 002-tags 확장 — 태그 인자 처리 및 필터 ---
+
+
+def test_add_with_tags_normalizes_and_dedupes(service):
+    item = service.add(title="A", tags=["Work", "work", "  WORK  "])
+    assert item.tags == frozenset({"work"})
+
+
+def test_add_rejects_more_than_5_tags(service):
+    with pytest.raises(ValueError):
+        service.add(title="A", tags=["a", "b", "c", "d", "e", "f"])
+
+
+def test_add_rejects_tag_too_long(service):
+    with pytest.raises(ValueError):
+        service.add(title="A", tags=["a" * 21])
+
+
+def test_add_rejects_empty_tag(service):
+    with pytest.raises(ValueError):
+        service.add(title="A", tags=[""])
+
+
+def test_add_rejects_disallowed_chars(service):
+    with pytest.raises(ValueError):
+        service.add(title="A", tags=["no spaces"])
+
+
+def test_add_with_no_tags_kwarg_keeps_legacy_behavior(service):
+    item = service.add(title="기존 흐름")
+    assert item.tags == frozenset()
+
+
+def test_list_filters_by_single_tag_exact_match(service):
+    service.add(title="A", tags=["work"])
+    service.add(title="B", tags=["personal"])
+    service.add(title="C", tags=["work", "urgent"])
+
+    work_items = service.list(tag="work")
+    assert {it.title for it in work_items} == {"A", "C"}
+
+
+def test_list_tag_filter_normalizes_input(service):
+    service.add(title="A", tags=["work"])
+    # 사용자가 'Work'로 조회해도 정규화 후 매칭
+    assert {it.title for it in service.list(tag="Work")} == {"A"}
+
+
+def test_list_tag_filter_returns_empty_when_no_match(service):
+    service.add(title="A", tags=["work"])
+    assert service.list(tag="missing") == []
+
+
+def test_list_tag_combines_with_completed_filter(service):
+    a = service.add(title="A", tags=["work"])
+    service.add(title="B", tags=["work"])
+    service.add(title="C", tags=["personal"])
+    service.complete(a.id)
+
+    result = service.list(tag="work", completed=True)
+    assert {it.title for it in result} == {"A"}
+
+
+def test_list_tag_combines_with_priority_filter(service):
+    service.add(title="A", tags=["work"], priority="high")
+    service.add(title="B", tags=["work"], priority="low")
+
+    result = service.list(tag="work", priority="high")
+    assert [it.title for it in result] == ["A"]
+
+
+def test_list_without_tag_arg_returns_all(service):
+    service.add(title="A", tags=["work"])
+    service.add(title="B")
+    assert {it.title for it in service.list()} == {"A", "B"}
