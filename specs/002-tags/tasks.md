@@ -80,11 +80,12 @@
 **Purpose**: 회귀 검증, 문서, 호환성 스모크.
 
 - [ ] T020 [P] 데이터 후방 호환 스모크 — `tags` 필드 없는 샘플 `legacy-todo.json`(2개 항목)을 임시 디렉터리에 생성한 뒤 `--db`로 지정해 `list`/`complete`/`delete` 모두 정상 동작 + 다음 쓰기 후 `"tags": []` 키가 추가되는지 단언 (`tests/integration/test_legacy_compat.py` 신규)
+- [ ] T020a [P] [SC-102 perf RED+GREEN] `list --tag` 성능 회귀 — 100개 항목(태그 다양 분포, 그 중 5개만 `urgent`) 사전 추가 후 `main(["--db", db, "list", "--tag", "urgent"])`를 SAMPLE_SIZE(=100)회 호출. `quantiles(durations, n=100)[94]`가 `THRESHOLD_S(=1.0)` 미만임을 단언하고, 결과의 정확도(매칭 항목 수=5)도 함께 검증. spec SC-102 직접 측정 (`tests/integration/test_performance.py` 확장 — 신규 `test_list_tag_p95_under_one_second` 함수 추가, 기존 함수 변경 금지)
 - [ ] T021 [P] tasks.md의 모든 [X] 마킹 + 회귀 결과 기록 — `pytest -q` 최종 결과(예: 65 passed, 1 skipped), `ruff check`/`format --check` 결과를 본 파일 하단의 검증 결과 섹션에 기록
 - [ ] T022 [P] quickstart 검증 — `specs/002-tags/quickstart.md`의 예시 명령들을 손으로 따라가 출력이 일치하는지 확인(스크린샷·로그 불필요, 사용자 시나리오 점검)
 - [ ] T023 README 갱신 — `specs/001-todo-cli/python-scaffold/README.md`의 사용 예시에 `--tag` 사용 문구 추가 (`specs/001-todo-cli/python-scaffold/README.md`)
 
-**Checkpoint 5 (최종)**: 전체 `pytest -q` + `ruff` 통과, 후방 호환 스모크 PASS, 문서 갱신 완료.
+**Checkpoint 5 (최종)**: 전체 `pytest -q` + `ruff` 통과, 후방 호환 스모크(T020) PASS, **SC-102 perf 단언(T020a) PASS**, 문서 갱신 완료.
 
 ---
 
@@ -100,7 +101,7 @@
 - Phase 2: T004→T005, T006→T007, T008→T009, T010→T011 (각 RED→GREEN). T004/T006/T008/T010은 서로 다른 파일이라 병렬 가능 (`[P]` 표시는 phase-내 RED 테스트 작성 단계만 해당).
 - Phase 3: T012→T014, T013은 T014와 병행 가능.
 - Phase 4: T015·T016·T017은 병렬, 모두 끝나면 T018 → T019.
-- Phase 5: T020·T021·T022 병렬, T023은 마지막.
+- Phase 5: T020·T020a·T021·T022 병렬, T023은 마지막.
 
 ---
 
@@ -132,7 +133,7 @@
 | US1 AC1~AC5 | T012, T014 |
 | US2 AC1~AC4 | T015, T016, T018 |
 | SC-101 (95%/1초 add) | 기존 `test_performance.py` (변경 없음) |
-| SC-102 (95%/1초 list) | 기존 `test_performance.py` |
+| SC-102 (95%/1초 `list --tag`, 100/5) | T020a (신규 perf 케이스, 정확도 5/5 단언 포함) |
 | SC-103 (회귀 0건) | T001, T019, Phase 5 전체 |
 | SC-104 (기존 파일 호환) | T008, T009, T020 |
 | Edge: 정규화/빈/문자/기존 데이터/다중 태그 매칭 | T004, T008, T012, T016, T020 |
