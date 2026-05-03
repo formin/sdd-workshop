@@ -17,6 +17,13 @@ pip install -e .[dev]
 pytest --cov=todo_lib tests/
 ```
 
+배지 (교체 필요)
+
+- CI 배지와 Codecov 배지를 아래에 추가했습니다. `OWNER/REPO`를 실제 GitHub 소유자와 저장소 이름으로 바꿔주세요.
+
+[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![Codecov](https://codecov.io/gh/OWNER/REPO/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/OWNER/REPO)
+
 DB 초기화
 
 ```powershell
