@@ -1,6 +1,10 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+shell commands, and other important information, read the current plan:
+- Active feature plan: [`specs/002-tags/plan.md`](specs/002-tags/plan.md)
+- Active feature spec: [`specs/002-tags/spec.md`](specs/002-tags/spec.md)
+- Constitution: [`.specify/memory/constitution.md`](.specify/memory/constitution.md)
+- Existing implementation (main, do not break): [`specs/001-todo-cli/python-scaffold/`](specs/001-todo-cli/python-scaffold/)
 <!-- SPECKIT END -->
 
 # 언어 규칙
