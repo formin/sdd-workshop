@@ -1,10 +1,11 @@
-package todo
+package todo_test
 
 import (
     "os"
     "testing"
 
     "github.com/example/todo-cli/internal/storage"
+    "github.com/example/todo-cli/internal/todo"
 )
 
 func TestServiceAddListCompleteDelete(t *testing.T) {
@@ -18,7 +19,7 @@ func TestServiceAddListCompleteDelete(t *testing.T) {
     defer os.Remove(path)
 
     fs := storage.NewFileStorage(path)
-    svc := NewService(fs)
+    svc := todo.NewService(fs)
 
     id, err := svc.Add("test item", "", "high")
     if err != nil {
