@@ -1,21 +1,38 @@
-
 [project]
-name = "todo-cli-py"
+name = "todo-cli"
 version = "0.1.0"
-description = "ToDo CLI (Python) - spec implementation scaffold"
-requires-python = ">=3.12"
-
-dependencies = [
-	"typer>=0.9.0",
-	"SQLAlchemy>=1.4",
-]
+description = "ToDo CLI — 로컬 JSON 저장소 기반 단일 사용자 CLI 도구"
+requires-python = ">=3.11"
+dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov"]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
 
-[tool.setuptools.packages.find]
-include = ["cli*", "todo_lib*"]
+[project.scripts]
+todo = "cli.main:main"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N"]
+
+[tool.ruff.format]
+quote-style = "double"
