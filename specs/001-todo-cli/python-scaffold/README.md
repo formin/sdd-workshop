@@ -16,3 +16,16 @@ python -m venv .venv
 pip install -e .[dev]
 pytest --cov=todo_lib tests/
 ```
+
+DB 초기화
+
+```powershell
+# DB 파일과 테이블을 생성
+python -m cli.main init-db --db ./todo.db
+```
+
+통합 테스트
+
+```powershell
+& '.venv\Scripts\python.exe' -m pytest tests/test_cli_integration.py -q
+```
