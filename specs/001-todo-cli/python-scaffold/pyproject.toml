@@ -1,0 +1,16 @@
+[project]
+name = "todo-cli-py"
+version = "0.1.0"
+description = "ToDo CLI (Python) - spec implementation scaffold"
+requires-python = ">=3.12"
+
+[project.dependencies]
+typer = "*"
+sqlalchemy = "*"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
