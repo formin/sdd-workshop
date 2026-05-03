@@ -1,12 +1,14 @@
+
 [project]
 name = "todo-cli-py"
 version = "0.1.0"
 description = "ToDo CLI (Python) - spec implementation scaffold"
 requires-python = ">=3.12"
 
-[project.dependencies]
-typer = "*"
-sqlalchemy = "*"
+dependencies = [
+	"typer>=0.9.0",
+	"SQLAlchemy>=1.4",
+]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov"]
