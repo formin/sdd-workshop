@@ -3,6 +3,7 @@ from typing import Optional
 import typer
 
 from todo_lib import TodoService
+from todo_lib.init_db import init_db
 
 app = typer.Typer(help="ToDo CLI (Typer)")
 
@@ -61,6 +62,13 @@ def delete(id: int = typer.Argument(..., help="삭제할 항목 ID"), db: str = 
     svc = get_service(db)
     svc.delete(id)
     typer.echo(f"Deleted {id}")
+
+
+@app.command("init-db")
+def initdb(db: str = typer.Option("todo.db", help="SQLite DB 파일 경로")):
+    """데이터베이스 파일과 테이블을 초기화합니다."""
+    init_db(db)
+    typer.echo(f"Initialized DB: {db}")
 
 
 if __name__ == "__main__":
